@@ -1,0 +1,564 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #0a0a0a;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    color: #ffffff;
+}
+
+.container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* 背景動畫 */
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particles::before,
+.particles::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #00d4ff;
+    border-radius: 50%;
+    animation: float-particle 15s infinite;
+    box-shadow: 
+        0 0 10px #00d4ff,
+        200px 300px 0 0 #ffd700,
+        400px 100px 0 0 #8a2be2,
+        600px 500px 0 0 #00d4ff,
+        800px 200px 0 0 #ffd700,
+        1000px 400px 0 0 #8a2be2;
+}
+
+.particles::after {
+    animation-delay: 7.5s;
+    box-shadow: 
+        100px 200px 0 0 #ffd700,
+        300px 400px 0 0 #8a2be2,
+        500px 100px 0 0 #00d4ff,
+        700px 300px 0 0 #ffd700,
+        900px 500px 0 0 #8a2be2,
+        1100px 150px 0 0 #00d4ff;
+}
+
+@keyframes float-particle {
+    0%, 100% {
+        transform: translate(0, 0);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translate(50px, -50px);
+        opacity: 1;
+    }
+}
+
+.grid-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: grid-move 20s linear infinite;
+}
+
+@keyframes grid-move {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(50px, 50px);
+    }
+}
+
+/* 主要內容 */
+.main-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 1200px;
+    width: 100%;
+}
+
+/* 生日標題 */
+.birthday-title {
+    margin-bottom: 60px;
+    animation: slideInUp 1s ease-out 0.3s both;
+    position: relative;
+}
+
+.title-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, transparent 70%);
+    animation: pulse-glow 3s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+.title-main {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 
+        0 0 20px rgba(0, 212, 255, 0.8),
+        0 0 40px rgba(0, 212, 255, 0.5),
+        0 0 60px rgba(0, 212, 255, 0.3);
+    animation: title-shine 3s ease-in-out infinite;
+}
+
+.title-number {
+    font-size: 5rem;
+    background: linear-gradient(135deg, #00d4ff 0%, #ffd700 50%, #8a2be2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: number-glow 2s ease-in-out infinite;
+}
+
+.title-name {
+    font-size: 4.5rem;
+    color: #ffffff;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.title-birthday {
+    font-size: 3rem;
+    color: #00d4ff;
+    letter-spacing: 0.1em;
+}
+
+@keyframes title-shine {
+    0%, 100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.3);
+    }
+}
+
+@keyframes number-glow {
+    0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.8));
+    }
+    50% {
+        filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+    }
+}
+
+.title-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.decoration-line {
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+    animation: line-extend 2s ease-in-out infinite;
+}
+
+.decoration-star {
+    font-size: 1.5rem;
+    color: #ffd700;
+    animation: star-rotate 3s linear infinite;
+}
+
+@keyframes line-extend {
+    0%, 100% {
+        width: 100px;
+        opacity: 0.7;
+    }
+    50% {
+        width: 150px;
+        opacity: 1;
+    }
+}
+
+@keyframes star-rotate {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.2);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+/* 圖片畫廊 */
+.gallery-container {
+    margin-bottom: 60px;
+    animation: slideInUp 1s ease-out 0.6s both;
+}
+
+.gallery-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #00d4ff;
+    margin-bottom: 40px;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    letter-spacing: 0.1em;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 212, 255, 0.2);
+    background: #1a1a1a;
+}
+
+.gallery-item:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.7),
+        0 0 40px rgba(0, 212, 255, 0.5);
+    z-index: 10;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.gallery-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.gallery-item:hover::after {
+    opacity: 1;
+}
+
+/* 大圖顯示 */
+.gallery-item.large {
+    grid-column: span 2;
+    grid-row: span 2;
+    aspect-ratio: 1;
+}
+
+@media (max-width: 768px) {
+    .gallery-item.large {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+}
+
+/* 祝福文字 */
+.blessing-text {
+    animation: slideInUp 1s ease-out 0.9s both;
+}
+
+.blessing-card {
+    position: relative;
+    background: rgba(20, 20, 20, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 40px;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        inset 0 0 30px rgba(0, 212, 255, 0.1);
+    color: #ffffff;
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.card-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+    animation: card-glow-move 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes card-glow-move {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(25%, 25%);
+    }
+}
+
+.blessing-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: #00d4ff;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    font-weight: 700;
+}
+
+.blessing-card p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.blessing-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 1em 0;
+}
+
+.blessing-list li {
+    font-size: 1.1rem;
+    line-height: 2;
+    margin-bottom: 12px;
+    padding-left: 1.5em;
+    color: rgba(255, 255, 255, 0.85);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.blessing-list li:hover {
+    color: #00d4ff;
+    transform: translateX(10px);
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.signature {
+    text-align: center;
+    font-weight: 700;
+    color: #ffd700;
+    font-size: 1.3rem;
+    margin-top: 30px;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+/* 煙火效果 */
+.fireworks {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.firework {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation: firework 1s ease-out forwards;
+}
+
+@keyframes firework {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(30);
+        opacity: 0;
+    }
+}
+
+/* 動畫關鍵幀 */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .title-main {
+        font-size: 2.5rem;
+    }
+    
+    .title-number {
+        font-size: 3.5rem;
+    }
+    
+    .title-name {
+        font-size: 3rem;
+    }
+    
+    .title-birthday {
+        font-size: 2rem;
+    }
+    
+    .gallery-title {
+        font-size: 2rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        padding: 10px;
+    }
+    
+    .blessing-card {
+        padding: 25px;
+    }
+    
+    .blessing-card h3 {
+        font-size: 1.5rem;
+    }
+    
+    .blessing-card p {
+        font-size: 1rem;
+    }
+    
+    .blessing-list li {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-main {
+        font-size: 2rem;
+    }
+    
+    .title-number {
+        font-size: 3rem;
+    }
+    
+    .title-name {
+        font-size: 2.5rem;
+    }
+    
+    .title-birthday {
+        font-size: 1.5rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 圖片載入動畫 */
+.gallery-item {
+    animation: fadeInScale 0.6s ease-out both;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 為不同位置的圖片添加延遲 */
+.gallery-item:nth-child(1) { animation-delay: 0.1s; }
+.gallery-item:nth-child(2) { animation-delay: 0.2s; }
+.gallery-item:nth-child(3) { animation-delay: 0.3s; }
+.gallery-item:nth-child(4) { animation-delay: 0.4s; }
+.gallery-item:nth-child(5) { animation-delay: 0.5s; }
+.gallery-item:nth-child(6) { animation-delay: 0.6s; }
+.gallery-item:nth-child(7) { animation-delay: 0.7s; }
+.gallery-item:nth-child(8) { animation-delay: 0.8s; }
+.gallery-item:nth-child(9) { animation-delay: 0.9s; }
+.gallery-item:nth-child(10) { animation-delay: 1s; }
+.gallery-item:nth-child(11) { animation-delay: 1.1s; }
+.gallery-item:nth-child(12) { animation-delay: 1.2s; }
+.gallery-item:nth-child(13) { animation-delay: 1.3s; }
+.gallery-item:nth-child(14) { animation-delay: 1.4s; }
+.gallery-item:nth-child(15) { animation-delay: 1.5s; }
+.gallery-item:nth-child(16) { animation-delay: 1.6s; }
+.gallery-item:nth-child(17) { animation-delay: 1.7s; }
+

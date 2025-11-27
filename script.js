@@ -1,71 +1,78 @@
-// 圖片列表
-const images = [
-    'images/20240702_145523.jpg',
-    'images/20240702_165000.jpg',
-    'images/20250211_134006.jpg',
-    'images/20250224_110639.jpg',
-    'images/20250224_110709.jpg',
-    'images/20250613_210014.jpg',
-    'images/20250906_163210.jpg',
-    'images/1754474666798-aec99603c8484c37bfcb68ec573e6120-800x1422.webp',
-    'images/Screenshot_20251009_185305_Photos.jpg',
-    'images/Screenshot_20251009_185317_Photos.jpg',
-    'images/PXL_20241128_101406662.MP.jpg',
-    'images/PXL_20241129_025804958.jpg',
-    'images/PXL_20250317_053117913.jpg',
-    'images/Screenshot_20250503-233854.png',
-    'images/markup_1000002727.png',
-    'images/markup_1000002728.png',
-    'images/Screenshot_20250719-130133.png'
+// 圖片和視頻列表 - 精心設計的排版配置
+// 每個項目包含：路徑、大小類別（1-17對應不同的grid布局）
+const mediaItems = [
+    { path: 'images/20240702_145523.jpg', size: 4 },  // 大圖 3x3
+    { path: 'images/20240702_165000.jpg', size: 2 },  // 中圖 3x2
+    { path: 'images/20250211_134006.jpg', size: 3 },  // 中圖 2x2
+    { path: 'images/20250224_110639.jpg', size: 2 },  // 中圖 3x2
+    { path: 'images/20250224_110709.jpg', size: 3 },  // 中圖 2x2
+    { path: 'images/20250613_210014.jpg', size: 4 },  // 大圖 3x3
+    { path: 'images/20250906_163210.jpg', size: 5 },  // 大圖 2x3
+    { path: 'images/1754474666798-aec99603c8484c37bfcb68ec573e6120-800x1422.webp', size: 8 },  // 特大圖 3x4
+    { path: 'images/Screenshot_20251009_185305_Photos.jpg', size: 2 },  // 中圖 3x2
+    { path: 'images/Screenshot_20251009_185317_Photos.jpg', size: 6 },  // 大圖 4x2
+    { path: 'images/PXL_20241128_101406662.MP.jpg', size: 4 },  // 大圖 3x3
+    { path: 'images/PXL_20241129_025804958.jpg', size: 3 },  // 中圖 2x2
+    { path: 'images/PXL_20250317_053117913.jpg', size: 2 },  // 中圖 3x2
+    { path: 'images/Screenshot_20250503-233854.png', size: 7 },  // 特大圖 5x3
+    { path: 'images/markup_1000002727.png', size: 3 },  // 中圖 2x2
+    { path: 'images/markup_1000002728.png', size: 4 },  // 大圖 3x3
+    { path: 'images/Screenshot_20250719-130133.png', size: 13 },  // 特大圖 4x3
+    { path: 'images/PXL_20240923_094252902.mp4', size: 10, isVideo: true },  // 視頻 4x2
+    { path: 'images/PXL_20241121_054245029.mp4', size: 16, isVideo: true }   // 視頻 5x2
 ];
 
-// 隨機打亂圖片順序
-function shuffleArray(array) {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-    }
-    return newArray;
-}
-
-// 載入圖片畫廊
+// 載入圖片和視頻畫廊
 function loadGallery() {
     const galleryGrid = document.getElementById('galleryGrid');
-    const shuffledImages = shuffleArray(images);
     
-    shuffledImages.forEach((imagePath, index) => {
+    mediaItems.forEach((item, index) => {
         const galleryItem = document.createElement('div');
-        galleryItem.className = 'gallery-item';
+        galleryItem.className = `gallery-item size-${item.size}`;
         
-        // 隨機選擇一些圖片作為大圖（約30%的機率）
-        if (Math.random() < 0.3 && index < shuffledImages.length - 3) {
-            galleryItem.classList.add('large');
+        if (item.isVideo) {
+            // 創建視頻元素
+            const video = document.createElement('video');
+            video.src = item.path;
+            video.controls = true;
+            video.muted = false;
+            video.loop = false;
+            video.playsInline = true;
+            video.style.cssText = 'width: 100%; height: 100%; object-fit: cover;';
+            
+            // 視頻載入錯誤處理
+            video.onerror = function() {
+                galleryItem.style.display = 'none';
+            };
+            
+            galleryItem.appendChild(video);
+        } else {
+            // 創建圖片元素
+            const img = document.createElement('img');
+            img.src = item.path;
+            img.alt = `回憶 ${index + 1}`;
+            img.loading = 'lazy';
+            
+            // 圖片載入錯誤處理
+            img.onerror = function() {
+                this.style.display = 'none';
+                galleryItem.style.display = 'none';
+            };
+            
+            // 點擊圖片放大
+            galleryItem.addEventListener('click', function() {
+                openImageModal(item.path);
+            });
+            
+            galleryItem.appendChild(img);
         }
         
-        const img = document.createElement('img');
-        img.src = imagePath;
-        img.alt = `回憶 ${index + 1}`;
-        img.loading = 'lazy';
-        
-        // 圖片載入錯誤處理
-        img.onerror = function() {
-            this.style.display = 'none';
-            galleryItem.style.display = 'none';
-        };
-        
-        // 點擊圖片放大
-        galleryItem.addEventListener('click', function() {
-            openImageModal(imagePath);
-        });
-        
-        galleryItem.appendChild(img);
         galleryGrid.appendChild(galleryItem);
     });
 }
 
 // 打開圖片模態框
-function openImageModal(imagePath) {
+function openImageModal(mediaPath) {
     // 創建模態框
     const modal = document.createElement('div');
     modal.className = 'image-modal';
@@ -84,25 +91,44 @@ function openImageModal(imagePath) {
         animation: fadeIn 0.3s ease;
     `;
     
-    const img = document.createElement('img');
-    img.src = imagePath;
-    img.style.cssText = `
-        max-width: 90%;
-        max-height: 90%;
-        object-fit: contain;
-        border-radius: 10px;
-        box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
-    `;
+    const isVideo = mediaPath.endsWith('.mp4');
+    let mediaElement;
     
-    modal.appendChild(img);
+    if (isVideo) {
+        mediaElement = document.createElement('video');
+        mediaElement.src = mediaPath;
+        mediaElement.controls = true;
+        mediaElement.style.cssText = `
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+        `;
+    } else {
+        mediaElement = document.createElement('img');
+        mediaElement.src = mediaPath;
+        mediaElement.style.cssText = `
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+        `;
+    }
+    
+    modal.appendChild(mediaElement);
     document.body.appendChild(modal);
     
     // 點擊關閉
-    modal.addEventListener('click', function() {
-        modal.style.animation = 'fadeOut 0.3s ease';
-        setTimeout(() => {
-            document.body.removeChild(modal);
-        }, 300);
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => {
+                if (modal.parentNode) {
+                    document.body.removeChild(modal);
+                }
+            }, 300);
+        }
     });
     
     // ESC鍵關閉
@@ -183,7 +209,7 @@ function handleScrollAnimation() {
 
 // 頁面載入完成後初始化
 document.addEventListener('DOMContentLoaded', function() {
-    // 載入圖片畫廊
+    // 載入圖片和視頻畫廊
     loadGallery();
     
     // 每8秒隨機觸發煙火效果
@@ -220,4 +246,3 @@ if ('ontouchstart' in window) {
         }, 1000);
     });
 }
-

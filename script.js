@@ -1,81 +1,53 @@
-// 圖片和視頻列表 - 精心設計的排版配置
-// 每個項目包含：路徑、大小類別（1-17對應不同的grid布局）
-const mediaItems = [
-    { path: 'images/20240702_145523.jpg', size: 4 },  // 大圖 3x3
-    { path: 'images/20240702_165000.jpg', size: 2 },  // 中圖 3x2
-    { path: 'images/20250211_134006.jpg', size: 3 },  // 中圖 2x2
-    { path: 'images/20250224_110639.jpg', size: 2 },  // 中圖 3x2
-    { path: 'images/20250224_110709.jpg', size: 3 },  // 中圖 2x2
-    { path: 'images/20250613_210014.jpg', size: 4 },  // 大圖 3x3
-    { path: 'images/20250906_163210.jpg', size: 5 },  // 大圖 2x3
-    { path: 'images/1754474666798-aec99603c8484c37bfcb68ec573e6120-800x1422.webp', size: 8 },  // 特大圖 3x4
-    { path: 'images/Screenshot_20251009_185305_Photos.jpg', size: 2 },  // 中圖 3x2
-    { path: 'images/Screenshot_20251009_185317_Photos.jpg', size: 6 },  // 大圖 4x2
-    { path: 'images/PXL_20241128_101406662.MP.jpg', size: 4 },  // 大圖 3x3
-    { path: 'images/PXL_20241129_025804958.jpg', size: 3 },  // 中圖 2x2
-    { path: 'images/PXL_20250317_053117913.jpg', size: 2 },  // 中圖 3x2
-    { path: 'images/Screenshot_20250503-233854.png', size: 7 },  // 特大圖 5x3
-    { path: 'images/markup_1000002727.png', size: 3 },  // 中圖 2x2
-    { path: 'images/markup_1000002728.png', size: 4 },  // 大圖 3x3
-    { path: 'images/Screenshot_20250719-130133.png', size: 13 },  // 特大圖 4x3
-    { path: 'images/PXL_20240923_094252902.mp4', size: 10, isVideo: true },  // 視頻 4x2
-    { path: 'images/PXL_20241121_054245029.mp4', size: 16, isVideo: true }   // 視頻 5x2
-];
+// --- 彈跳網球邏輯 (DVD Screensaver 風格) ---
+const ball = document.getElementById('tennis-ball');
 
-// 載入圖片和視頻畫廊
-function loadGallery() {
-    const galleryGrid = document.getElementById('galleryGrid');
+let x = Math.random() * (window.innerWidth - 40);
+let y = Math.random() * (window.innerHeight - 40);
+let dx = 2.5; // 水平速度
+let dy = 2.5; // 垂直速度
+
+function animateBall() {
+    const ballSize = 40;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
     
-    mediaItems.forEach((item, index) => {
-        const galleryItem = document.createElement('div');
-        galleryItem.className = `gallery-item size-${item.size}`;
-        
-        if (item.isVideo) {
-            // 創建視頻元素
-            const video = document.createElement('video');
-            video.src = item.path;
-            video.controls = true;
-            video.muted = false;
-            video.loop = false;
-            video.playsInline = true;
-            video.style.cssText = 'width: 100%; height: 100%; object-fit: cover;';
-            
-            // 視頻載入錯誤處理
-            video.onerror = function() {
-                galleryItem.style.display = 'none';
-            };
-            
-            galleryItem.appendChild(video);
-        } else {
-            // 創建圖片元素
-            const img = document.createElement('img');
-            img.src = item.path;
-            img.alt = `回憶 ${index + 1}`;
-            img.loading = 'lazy';
-            
-            // 圖片載入錯誤處理
-            img.onerror = function() {
-                this.style.display = 'none';
-                galleryItem.style.display = 'none';
-            };
-            
-            // 點擊圖片放大
-            galleryItem.addEventListener('click', function() {
-                openImageModal(item.path);
-            });
-            
-            galleryItem.appendChild(img);
-        }
-        
-        galleryGrid.appendChild(galleryItem);
-    });
+    // 移動
+    x += dx;
+    y += dy;
+    
+    // 碰到邊緣反彈
+    if (x + ballSize >= windowWidth || x <= 0) {
+        dx = -dx;
+    }
+    if (y + ballSize >= windowHeight || y <= 0) {
+        dy = -dy;
+    }
+    
+    // 更新位置
+    ball.style.left = x + 'px';
+    ball.style.top = y + 'px';
+    
+    requestAnimationFrame(animateBall);
 }
 
-// 打開圖片模態框
-function openImageModal(mediaPath) {
-    // 創建模態框
+// 啟動網球動畫
+animateBall();
+
+// 當視窗大小改變時，確保球不會卡在外面
+window.addEventListener('resize', () => {
+    x = Math.min(x, window.innerWidth - 40);
+    y = Math.min(y, window.innerHeight - 40);
+});
+
+// --- 圖片點擊放大功能 (使用事件委托提升性能) ---
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.masonry-item img')) {
+        openImageModal(e.target.src);
+    }
+});
+
+function openImageModal(imagePath) {
     const modal = document.createElement('div');
-    modal.className = 'image-modal';
     modal.style.cssText = `
         position: fixed;
         top: 0;
@@ -86,49 +58,32 @@ function openImageModal(mediaPath) {
         display: flex;
         align-items: center;
         justify-content: center;
-        z-index: 1000;
+        z-index: 10000;
         cursor: pointer;
         animation: fadeIn 0.3s ease;
     `;
     
-    const isVideo = mediaPath.endsWith('.mp4');
-    let mediaElement;
+    const img = document.createElement('img');
+    img.src = imagePath;
+    img.style.cssText = `
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 10px;
+        box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+    `;
     
-    if (isVideo) {
-        mediaElement = document.createElement('video');
-        mediaElement.src = mediaPath;
-        mediaElement.controls = true;
-        mediaElement.style.cssText = `
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 10px;
-            box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
-        `;
-    } else {
-        mediaElement = document.createElement('img');
-        mediaElement.src = mediaPath;
-        mediaElement.style.cssText = `
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 10px;
-            box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
-        `;
-    }
-    
-    modal.appendChild(mediaElement);
+    modal.appendChild(img);
     document.body.appendChild(modal);
     
     // 點擊關閉
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            modal.style.animation = 'fadeOut 0.3s ease';
-            setTimeout(() => {
-                if (modal.parentNode) {
-                    document.body.removeChild(modal);
-                }
-            }, 300);
-        }
+    modal.addEventListener('click', function() {
+        modal.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => {
+            if (modal.parentNode) {
+                document.body.removeChild(modal);
+            }
+        }, 300);
     });
     
     // ESC鍵關閉
@@ -160,12 +115,13 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// 煙火效果
+// --- 煙火效果 (優化性能) ---
 function createFireworks() {
     const fireworksContainer = document.getElementById('fireworks');
     const colors = ['#00d4ff', '#ffd700', '#8a2be2', '#ff6b6b', '#00ff88', '#ff00ff'];
     
-    for (let i = 0; i < 8; i++) {
+    // 減少煙火數量
+    for (let i = 0; i < 5; i++) {
         setTimeout(() => {
             const firework = document.createElement('div');
             firework.className = 'firework';
@@ -175,74 +131,34 @@ function createFireworks() {
             firework.style.boxShadow = `0 0 20px ${firework.style.backgroundColor}`;
             fireworksContainer.appendChild(firework);
             
-            // 移除煙火元素
             setTimeout(() => {
                 if (firework.parentNode) {
                     firework.parentNode.removeChild(firework);
                 }
             }, 1000);
-        }, i * 150);
+        }, i * 200);
     }
 }
 
-// 隨機煙火效果（定期觸發）
+// 隨機煙火效果 (降低頻率以提升性能)
 function randomFireworks() {
-    if (Math.random() < 0.15) { // 15% 機率觸發煙火
+    if (Math.random() < 0.08) { // 降低機率
         createFireworks();
     }
 }
 
-// 滾動動畫
-function handleScrollAnimation() {
-    const elements = document.querySelectorAll('.gallery-item, .blessing-card');
-    const windowHeight = window.innerHeight;
-    
-    elements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        
-        if (elementTop < windowHeight - 100) {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }
-    });
-}
-
 // 頁面載入完成後初始化
 document.addEventListener('DOMContentLoaded', function() {
-    // 載入圖片和視頻畫廊
-    loadGallery();
-    
-    // 每8秒隨機觸發煙火效果
-    setInterval(randomFireworks, 8000);
+    // 每15秒隨機觸發煙火效果 (降低頻率)
+    setInterval(randomFireworks, 15000);
     
     // 頁面載入時觸發煙火效果
-    setTimeout(createFireworks, 1500);
-    
-    // 滾動事件
-    window.addEventListener('scroll', handleScrollAnimation);
-    
-    // 初始觸發一次滾動動畫
-    handleScrollAnimation();
+    setTimeout(createFireworks, 2000);
 });
 
-// 添加鍵盤快捷鍵
+// 按 F 鍵觸發煙火
 document.addEventListener('keydown', function(e) {
     if (e.key === 'f' || e.key === 'F') {
         createFireworks();
     }
 });
-
-// 添加觸摸設備支持
-if ('ontouchstart' in window) {
-    let touchCount = 0;
-    document.addEventListener('touchstart', function(e) {
-        touchCount++;
-        if (touchCount === 3) {
-            createFireworks();
-            touchCount = 0;
-        }
-        setTimeout(() => {
-            touchCount = 0;
-        }, 1000);
-    });
-}

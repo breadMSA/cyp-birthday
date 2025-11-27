@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- 彈跳網球 -->
+    <div id="tennis-ball">🎾</div>
+
     <div class="container">
         <!-- 背景動畫 -->
         <div class="background-animation">
@@ -18,7 +21,7 @@
         <!-- 主要內容 -->
         <div class="main-content">
             <!-- 生日快樂標題 -->
-            <div class="birthday-title">
+            <header class="birthday-header">
                 <div class="title-glow"></div>
                 <h1 class="title-main">
                     <span class="title-number">19</span>
@@ -30,23 +33,58 @@
                     <div class="decoration-star">✦</div>
                     <div class="decoration-line"></div>
                 </div>
-            </div>
+            </header>
 
-            <!-- 圖片畫廊 -->
-            <div class="gallery-container">
-                <h2 class="gallery-title">回憶時光</h2>
-                <div class="gallery-grid" id="galleryGrid">
-                    <!-- 圖片將由 JavaScript 動態載入 -->
+            <!-- 影片區域 (劇院模式) -->
+            <section class="video-section">
+                <h2 class="section-title">舊域舊夢</h2>
+                <div class="video-wrapper">
+                    <div class="video-container">
+                        <video controls playsinline preload="metadata">
+                            <source src="images/PXL_20240923_094252902.mp4" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                        </video>
+                    </div>
+                    <div class="video-container">
+                        <video controls playsinline preload="metadata">
+                            <source src="images/PXL_20241121_054245029.mp4" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                        </video>
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- 圖片畫廊 (瀑布流) -->
+            <section class="gallery-section">
+                <h2 class="section-title">帥照迴廊</h2>
+                <div class="masonry-grid">
+                    <div class="masonry-item"><img src="images/1754474666798-aec99603c8484c37bfcb68ec573e6120-800x1422.webp" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/20240702_145523.jpg" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/20240702_165000.jpg" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/20250211_134006.jpg" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/20250224_110639.jpg" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/20250224_110709.jpg" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/20250613_210014.jpg" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/20250906_163210.jpg" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/PXL_20241128_101406662.MP.jpg" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/PXL_20241129_025804958.jpg" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/PXL_20250317_053117913.jpg" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/Screenshot_20250503-233854.png" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/Screenshot_20250719-130133.png" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/Screenshot_20251009_185305_Photos.jpg" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/Screenshot_20251009_185317_Photos.jpg" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/markup_1000002727.png" alt="回憶"></div>
+                    <div class="masonry-item"><img src="images/markup_1000002728.png" alt="回憶"></div>
+                </div>
+            </section>
 
             <!-- 祝福文字 -->
-            <div class="blessing-text">
+            <section class="blessing-section">
                 <div class="blessing-card">
                     <div class="card-glow"></div>
                     <h3>年紀已經比我大的 育鵬小朋友，</h3>
-                    <p>在這個特別的日子裡，願你的笑容永駐，往後的每一次抽卡都是小保底，提早出金</p>
-                    <p>最後讓我用鄙人綿薄的國文能力，彌補無法實體慶生的遺憾：</p>
+                    <p>在這個特別的日子裡，願你的笑容永駐，往後的每一次抽卡都歪常駐虎杖，但足球踢得勢不可擋</p>
+                    <p>最後讓我用鄙人綿薄的國文能力，彌補無法實體慶生而且還錯過時間的遺憾：</p>
                     
                     <p style="text-align: center; font-style: italic; margin: 1.5em 0; line-height: 1.8;">
                         <span style="font-size: 1.1em; font-weight: bold; color: #00d4ff;">浮光清淺，歲月溫良。</span>
@@ -70,9 +108,9 @@
                     <p style="text-align: center; font-weight: bold; color: #00d4ff; margin-top: 1.5em;">
                         長願你此心皎皎，得歲歲平安，得順遂安康。
                     </p>
-                    <p class="signature">🎂 祝你生日快樂，抽卡不歪！ 🎂</p>
+                    <p class="signature">🎂 祝你生日快樂，油杰 🎂</p>
                 </div>
-            </div>
+            </section>
         </div>
 
         <!-- 煙火效果 -->
@@ -82,4 +120,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-

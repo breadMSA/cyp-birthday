@@ -254,14 +254,17 @@ body {
 /* CSS Column 瀑布流 - 保持和電腦一樣的排版 */
 .masonry-grid {
     column-count: 3;
-    column-gap: 20px;
+    column-gap: 10px;
+    column-width: calc(33.333% - 7px);
     width: 100%;
     max-width: 100%;
 }
 
 .masonry-item {
     break-inside: avoid;
-    margin-bottom: 20px;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 10px;
     position: relative;
     border-radius: 12px;
     overflow: hidden;
@@ -271,6 +274,8 @@ body {
     transition: transform 0.4s ease, box-shadow 0.4s ease;
     background: #1a1a1a;
     cursor: pointer;
+    width: 100%;
+    display: inline-block;
 }
 
 .masonry-item img {
@@ -445,11 +450,13 @@ body {
     }
     
     .masonry-grid {
-        column-gap: 10px;
+        column-count: 3 !important;
+        column-gap: 8px !important;
+        column-width: calc(33.333% - 6px) !important;
     }
     
     .masonry-item {
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
     
     .video-wrapper {
